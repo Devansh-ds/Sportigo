@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,20 +18,28 @@ import java.util.List;
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
-    private String title;
-    private LocalDateTime startTime;
+    @Column(name = "sport_key")
+    private String sportKey;
+
+    private String sportTitle;
+
+    private String startTime;
 
     @ManyToOne
-    private Sport sport;
+    private Team homeTeam;
+
+    @ManyToOne
+    private Team awayTeam;
+
+    @ManyToOne
+    private League league;
 
     private EventStatus status;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "event")
-    @JsonManagedReference
-    private List<Market> markets;
+    private List<Market> markets = new ArrayList<>();
 
 
 }

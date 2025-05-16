@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,14 +19,19 @@ public class Market {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String name;
+    private Long id;
+
+    @Column(name = "market_key")
+    private String marketKey;
+
+    private String lastUpdate;
 
     @ManyToOne
-    @JsonBackReference
     private Event event;
 
+    @ManyToOne
+    private Bookmaker bookmaker;
+
     @OneToMany(mappedBy = "market", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Selection> selections;
+    private List<Selection> selections = new ArrayList<>();
 }

@@ -13,20 +13,18 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-public class Selection {
+public class League {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private Double price;
-    private Double point;
+    @Column(name = "league_key")
+    private String leagueKey;
+    private String title;
+    private String description;
 
-    @ManyToOne
-    private Market market;
-
-    @OneToMany(mappedBy = "selection", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bet> bets = new ArrayList<>();
+    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
 
 }
