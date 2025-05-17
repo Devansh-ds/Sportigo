@@ -63,6 +63,36 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
+
+    @ExceptionHandler(MarketException.class)
+    public ResponseEntity<ErrorDetail> marketExceptionHandler(MarketException e, WebRequest req) {
+        ErrorDetail err = new ErrorDetail(
+                e.getMessage(),
+                req.getDescription(false),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(EventException.class)
+    public ResponseEntity<ErrorDetail> eventExceptionHandler(EventException e, WebRequest req) {
+        ErrorDetail err = new ErrorDetail(
+                e.getMessage(),
+                req.getDescription(false),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(TeamException.class)
+    public ResponseEntity<ErrorDetail> teamExceptionHandler(TeamException e, WebRequest req) {
+        ErrorDetail err = new ErrorDetail(
+                e.getMessage(),
+                req.getDescription(false),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
 }
 
 

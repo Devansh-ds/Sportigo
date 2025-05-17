@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,10 +30,21 @@ public class Bet {
     private Selection selection;
 
     @Positive
-    private BigDecimal stake;
+    private BigDecimal amount;
+
     @Positive
-    private BigDecimal potentialWin;
+    private BigDecimal unmatchedAmount;
+
+    private BigDecimal odds;
+    private BetType betType;
     private BetStatus status;
-    private LocalDateTime placedAt;
+    private Instant placedAt;
+
+    public void reduceUnmatchedAmount(BigDecimal matchAmount) {
+        this.unmatchedAmount = this.unmatchedAmount.subtract(matchAmount);
+        if (this.unmatchedAmount.compareTo(BigDecimal.ZERO) == 0) {
+            this.status = BetStatus.MATCHED;
+        }
+    }
 
 }

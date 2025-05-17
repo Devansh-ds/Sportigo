@@ -22,9 +22,8 @@ public class League {
     @Column(name = "league_key")
     private String leagueKey;
     private String title;
-    private String description;
 
-    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "league")
     private List<Event> events = new ArrayList<>();
 
 }

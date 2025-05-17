@@ -7,9 +7,10 @@ import com.sadds.dto.OddsApiOutcomeDto;
 import com.sadds.model.*;
 import com.sadds.repo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class OddsMappingService {
     private final BookmakerRepository bookmakerRepository;
     private final MarketRepository marketRepository;
     private final SelectionRepository selectionRepository;
+    private final LeagueRepository leagueRepository;
 
     public Team findOrCreateTeam(String teamName, String sportKey) {
         return teamRepository
@@ -35,6 +37,17 @@ public class OddsMappingService {
     @Transactional
     public void mapAndSaveOdds(OddsApiEventDto[] events) {
         for (OddsApiEventDto eventDto : events) {
+            League league = leagueRepository
+                    .findByLeagueKey(eventDto.sport_key())
+                    .orElseGet(() -> {
+                        League newLeague = League
+                                .builder()
+                                .leagueKey(eventDto.sport_key())
+                                .title(eventDto.sport_title())
+                                .build();
+                        return leagueRepository.save(newLeague);
+                    });
+
             Event event = eventRepository
                     .findById(eventDto.id())
                     .orElseGet(() -> Event
@@ -42,7 +55,8 @@ public class OddsMappingService {
                             .id(eventDto.id())
                             .sportKey(eventDto.sport_key())
                             .sportTitle(eventDto.sport_title())
-                            .startTime(eventDto.commence_time())
+                            .startTime(Instant.parse(eventDto.commence_time()))
+                            .league(league)
                             .build());
             event = eventRepository.save(event);
 
@@ -83,12 +97,12 @@ public class OddsMappingService {
                         market = Market
                                 .builder()
                                 .marketKey(marketDto.key())
-                                .lastUpdate(marketDto.last_update())
+                                .lastUpdate(Instant.parse(marketDto.last_update()))
                                 .event(event)
                                 .bookmaker(bookmaker)
                                 .build();
                     } else {
-                        market.setLastUpdate(marketDto.last_update());
+                        market.setLastUpdate(Instant.parse(marketDto.last_update()));
                         market.setMarketKey(marketDto.key());
                     }
                     marketRepository.save(market);

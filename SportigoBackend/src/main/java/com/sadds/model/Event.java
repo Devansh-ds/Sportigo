@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Event {
 
     private String sportTitle;
 
-    private String startTime;
+    private Instant startTime;
 
     @ManyToOne
     private Team homeTeam;

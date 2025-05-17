@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Market {
     @Column(name = "market_key")
     private String marketKey;
 
-    private String lastUpdate;
+    private Instant lastUpdate;
 
     @ManyToOne
     private Event event;

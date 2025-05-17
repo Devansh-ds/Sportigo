@@ -3,6 +3,7 @@ package com.sadds.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,6 +22,6 @@ public class MatchFeed {
     private Event event;
 
     private String jsonData;
-    private LocalDateTime lastUpdated;
+    private Instant lastUpdated;
 
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,7 +30,7 @@ public class Transaction {
     @Positive
     private BigDecimal amount;
     private String description;
-    private LocalDateTime timestamp;
+    private Instant timestamp;
 
     private TransactionType type;
 
